@@ -2,18 +2,17 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"content="width=device-width, initial scale=1.0">
+        <meta name="viewport"content="width=device-width, initial-scale=1.0">
         <title>
             what the hell is this
         </title>
-
     </head>
-    <body style="background-color:#f3e8f2 ">
+    <body>
         <div style="text-align: center;">
-        <h1 style="color: #5c0c14">Форма для додавання викладача</h1>
+        <h1>Форма для додавання викладача</h1>
         </div>
         <hr>
-        <form>
+        <form action="tsk2.html">
             <p>Повне ім'я: <br>
             <input type="text" name="Повне ім'я (ПІБ)">
             </p>
@@ -25,7 +24,7 @@
                 <input type="radio" name="Стать" value="Жінка">Жінка<br>
             </p>
             <p>Електронна адреса: <br>
-            <input type="text" name="імейл">
+            <input type="email" name="імейл">
             </p>
             <p>Телефон (український номер required): <br>
             <input type="tel" name="телефон" value="+38"> 
@@ -53,20 +52,17 @@
             <p>Місто: <br>
             <input type="text" name="місто"><br>
             </p>
-            <p>Бажаний колір фону: <br>
-            <select name="колір">
-                <option value="blanchedalmond">бежевий</option>
-                <option value=""></option>
-            </select>
+            <p>Бажаний колір фону: 
+            <br>
+            <input type="color">
         </p>
             <p>Коментар: <br>
                 <textarea name="комент" rows="2" cols="50"></textarea>
             </p>
             <hr>
-            <div style="text-align: center;">
-            <input type="submit" value="Далі">
+            <div>
+            <input type="submit" value="Далі"><button></button>
             </div>
         </form>
     </body>
-
 </html>
