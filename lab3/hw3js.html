@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"content="width=device-width, initial-scale=1.0">
+        <title>
+            Кошик для продуктів
+        </title>
+        <style>
+            h1{
+                color: #0f0915;
+                text-align: center;
+            }
+            h3 {
+                color:black;
+                text-align: justify;
+            }
+            body{
+                background-color: #dddae0;
+                position: relative;
+                font-family: sans-serif;
+                font-size: medium;
+                color: black;
+                text-align: justify;
+            }
+            .block {
+                display: flex;
+                margin: 20px;
+                 gap: 20px;
+                flex-wrap: wrap;
+            }
+            .column {
+                 background: white;
+                 padding: 20px;
+                 border-radius: 10px;
+                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                 flex: 1;
+                 min-width: 300px;
+                 overflow-y: auto;
+            }
+            @media (max-width: 650px){
+                .column{
+                    flex-direction: column;
+                    height:auto;
+                }
+            }
+            .form {
+                margin: 20px;
+            }
+            .form button{
+                color: white;
+                background-color: #3a4ac2;
+                border-radius: 3px;
+            }
+            .form input[type="text"] {
+                height: 40px;
+                padding: 0 10px;
+                font-size: 14px;
+                border-radius: 3px;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                margin-right: 10px;
+                flex: 1;
+            }
+            .form {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .buttons-wrapper {
+              display: flex;
+              justify-content: center;
+              width: 100%;
+              margin-top: 10px;
+            }
+            .addOrDelete {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .addOrDelete button {
+                font-size: 15px;
+                color: gray;
+                border: none;
+                cursor: pointer;
+                margin: 5px;
+                flex-direction: column;
+
+            }
+            .amount-control {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+              flex: 1;
+            }
+            .actions {
+            display: flex;
+            gap: 10px;
+          }
+            .addOrDelete button.plus-minus {
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;      
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 20px;
+            }
+            .button-red {
+                background-color: red;
+                color: white;
+            }
+            .button-green {
+                background-color: green;
+                color: white;
+            }
+            .product {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 10px 0;
+                .product {
+              }
+            }
+            .product-box {
+             background-color: #f5f5f5;
+             border: 1px solid #ccc;
+             border-radius: 10px;
+             padding: 10px 15px;
+             margin: 10px 0;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             text-align: center;
+             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .product-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .baige {
+                background-color: #ea9943;
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 10px;
+                padding: 3px 7px;
+                border-radius: 10px;
+        }
+            .moving-baige {
+                background-color: #563678;
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 12px;
+                position: fixed;
+                padding: 10px 15px;
+                left: 15px;
+                bottom: 10px;
+                border-radius: 10px 10px 0 0 ;
+                transform: translateY(0);
+                transition: transform 0.5s ease, color 0.5s ease;
+                overflow: hidden;
+                cursor: pointer;
+            }
+             .moving-baige:hover {
+                color: #4dc6f7;
+                transform: translateY(-60%);
+                background-color: darkblue;
+            }
+            .custom-baige .baige-text {
+              transition: all 0.4s ease;
+              opacity: 0;
+              transform: translateY(20px);
+              font-size: 12px;
+              margin-top: 5px;
+              text-align: center;
+            }
+
+            .custom-baige:hover .baige-text {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            @media print {
+                .main-text {
+                    display: none !important;
+                }
+                .moving-baige {
+                    background-color: white !important;
+                    color: #563678;
+                    border: 2px solid #563678 !important;
+                    transform: none !important;
+                }
+                .custom-baige .baige-text {
+                    opacity: 1 !important;
+                    transform: none !important;
+                    color: #4B0082;
+                }
+            }
+
+            [data-tooltip] {
+                position: relative;
+            }
+            [data-tooltip]::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                background-color: #a566e7;
+                color: white;
+                font-size: 8px;
+                font-family: 'Courier New', Courier, monospace;
+                opacity: 0;
+                padding: 5px 10px;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                white-space: nowrap;
+                pointer-events: none;
+                z-index: 10;
+                transform: translateX(-50%) scale(0.8);
+            }
+            [data-tooltip]:hover::after{
+                bottom: -35px;
+                opacity: 1;
+                transform: translateX(-35%) scale(1);
+            }
+           
+            button {
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              border-radius: 5px;
+            }
+
+          .button-round {
+             border-radius: 50%;
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            }
+            
+            .button-red {
+                background-color: red;
+                box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
+            }
+        </style>
+    </head>
+   <body>
+  <h1>Кошик для покупок</h1>
+  <div class="block">
+    <div class="column">
+      <div class="form">
+        <input type="text" id="productInput" placeholder="Назва товару">
+        <button data-tooltip="Додати товар" onclick="addingProd()">Додати</button>
+      </div>
+      <hr>
+      <div id="list">
+      </div>
+    </div>
+    <div class="column">
+      <h3>Залишилося</h3>
+      <hr>
+      <div id="arentBought">
+      </div>
+      <hr>
+      <h3>Куплено</h3>
+      <hr>
+      <div id="isBought">
+      </div>
+    </div>
+  </div>
+  <div class="moving-baige custom-baige">
+    <span class="main-text">BuyList</span>
+    <div class="baige-text">Vieronika Koliesnikova
+    </div>
+  </div>
+  <script>
+    const list = document.getElementById('list');
+    const isBought = document.getElementById('isBought');
+    const arentBought = document.getElementById('arentBought');
+    const productInput = document.getElementById('productInput');
+
+    let products = [
+      { name: "Яйця", amount: 8, isBought: true },
+      { name: "Сир", amount: 1, isBought: false },
+      { name: "Олія", amount: 1, isBought: false }
+    ];
+
+   function updatingPage() {
+      arentBought.innerHTML = '';
+      isBought.innerHTML = '';
+      for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        let item = '<div class="product-box"><label';
+        if (product.isBought) {
+          item += ' style="text-decoration: line-through;"';
+        }
+        item += '>' + product.name + ' <span class="baige">' + product.amount + '</span></label></div>';
+        if (product.isBought) {
+          isBought.innerHTML += item;
+        } else {
+          arentBought.innerHTML += item;
+        }
+      }
+    }
+    function setDefaultProd() {
+      list.innerHTML = '';
+      for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        const productElement = document.createElement('div');
+        productElement.className = 'product';
+        let title;
+        if (product.isBought) {
+             title = '<span style="text-decoration: line-through;">' + product.name + '</span>';
+            }
+            else {
+                title = '<span onclick="changeName(' + i + ')">' + product.name + '</span>';
+            }
+       let buttonsHtml = '<div class="addOrDelete">';
+        if (!product.isBought) {
+          buttonsHtml += `<div class="amount-control">
+            <button class="plus-minus button-red" data-tooltip="Зменшити" onclick="decreaseNumOfProd(${i})">-</button>
+            <span>${product.amount}</span>
+            <button class="plus-minus button-green" data-tooltip="Збільшити" onclick="increaseNumOfProd(${i})">+</button>
+            </div>
+            <div class="actions">
+              <button data-tooltip="Купити" onclick="statusIsBought(${i})">Придбати</button>
+              <button data-tooltip="Видалити товар" onclick="deleteProd(${i})" style="color: white; background-color: red;">x</button>
+              </div>`;
+            } else {
+              buttonsHtml += `<span>${product.amount}</span>
+              <button data-tooltip="Позначити як не куплене" onclick="statusIsBought(${i})">Не купувати</button>`;
+            }
+            buttonsHtml += '</div>';
+            productElement.innerHTML = title + buttonsHtml;
+            list.appendChild(productElement);
+          }
+          updatingPage();
+        }
+
+    function increaseNumOfProd(index) {
+      products[index].amount++;
+      setDefaultProd();
+    }
+
+    function decreaseNumOfProd(index) {
+      if (products[index].amount > 1) {
+        products[index].amount--;
+        setDefaultProd();
+      } 
+    }
+
+    function addingProd() {
+      const name = productInput.value.trim();
+      if (name) {
+        products.push({ name, amount: 1, isBought: false });
+        productInput.value = '';
+        productInput.focus();
+        setDefaultProd();
+      }
+    }
+
+    function deleteProd(index) {
+      products.splice(index, 1);
+      setDefaultProd();
+    }
+
+    function statusIsBought(index) {
+      products[index].isBought = !products[index].isBought;
+      setDefaultProd();
+    }
+
+    function changeName(index) {
+      const prodEl = list.children[index];
+      const span = prodEl.querySelector('span');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = products[index].name;
+      input.onblur = () => {
+        products[index].name = input.value.trim() || products[index].name;
+        setDefaultProd();
+      };
+      span.replaceWith(input);
+      input.focus();
+    }
+
+    productInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addingProd();
+    });
+
+    setDefaultProd();
+  </script>
+</body>
+</html>
